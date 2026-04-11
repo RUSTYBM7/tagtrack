@@ -1,38 +1,101 @@
 import SwiftUI
+import Charts
 
 struct AnalyticsView: View {
-    var maxSpend: Double { SampleData.weeklySpend.max() ?? 1 }
+    @State private var data: [AnalyticsData] = []
+    @State private var selectedTimePeriod: TimePeriod = .week
+    @State private var isLoading: Bool = false
+
+    enum TimePeriod: String, CaseIterable {
+        case week = "Week"
+        case month = "Month"
+        case year = "Year"
+    }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 18) {
-            Text("Weekly Analytics")
-                .font(.title2.bold())
-                .foregroundStyle(.white)
+        VStack {
+            Picker("Select Time Period", selection: $selectedTimePeriod) {
+                ForEach(TimePeriod.allCases, id: \ .self) { period in
+                    Text(period.rawValue).tag(period)
+                }
+            }.pickerStyle(SegmentedPickerStyle())
 
-            Text("Spending Trend")
-                .foregroundStyle(.gray)
+            if isLoading {
+                ProgressView()
+            } else {
+                // Chart for Analytics Data
+                Chart(data) { analytics in
+                    BarMark(x: .value("Date", analytics.date), y: .value("Spend", analytics.spend))
+                }
+                .frame(height: 300)
 
-            HStack(alignment: .bottom, spacing: 10) {
-                ForEach(Array(SampleData.weeklySpend.enumerated()), id: \.offset) { index, value in
-                    VStack {
-                        Spacer(minLength: 0)
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(index == 5 ? Color.mint : Color.white.opacity(0.2))
-                            .frame(height: max(20, CGFloat(value / maxSpend) * 170))
-                        Text(["M", "T", "W", "T", "F", "S", "S"][index])
-                            .font(.caption2)
-                            .foregroundStyle(.gray)
-                    }
+                // Statistics Cards
+                HStack {
+                    StatisticsCard(title: "Total Spend", value: "\(totalSpend())")
+                    StatisticsCard(title: "Average Spend", value: "\(averageSpend())")
+                    StatisticsCard(title: "Peak Spend", value: "\(peakSpend())")
+                }
+
+                Button(action: exportData) {
+                    Text("Export Data")
                 }
             }
-            .frame(height: 220)
-            .padding()
-            .background(Color.white.opacity(0.04), in: RoundedRectangle(cornerRadius: 20))
+        }
+        .onAppear(perform: loadData)
+        .refreshable { loadData() }
+    }
 
-            Spacer()
+    private func loadData() {
+        isLoading = true
+        // Load your data from an API or local source based on the selectedTimePeriod
+        isLoading = false
+    }
+
+    private func exportData() {
+        // Implement export logic here for CSV and JSON formats
+    }
+
+    private func totalSpend() -> Double {
+        data.reduce(0) { $0 + $1.spend }
+    }
+
+    private func averageSpend() -> Double {
+        let total = totalSpend()
+        return total / Double(data.count)
+    }
+
+    private func peakSpend() -> Double {
+        data.map { $0.spend }.max() ?? 0
+    }
+}
+
+struct StatisticsCard: View {
+    let title: String
+    let value: String
+
+    var body: some View {
+        VStack {
+            Text(title)
+            Text(value)
+                .font(.largeTitle)
+                .foregroundColor(.blue)
         }
         .padding()
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(Color.black)
+        .background(Color.gray.opacity(0.1))
+        .cornerRadius(8)
+    }
+}
+
+struct AnalyticsData {
+    let date: Date
+    let spend: Double
+}
+
+@main
+struct YourApp: App {
+    var body: some Scene {
+        WindowGroup {
+            AnalyticsView()
+        }
     }
 }
