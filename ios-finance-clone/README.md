@@ -1,16 +1,14 @@
-# AI Finance Assistant iOS UI Clone (SwiftUI)
+# Onyx Bank iOS UI Clone (SwiftUI)
 
-This folder contains a SwiftUI implementation inspired by the provided Behance concept:
-https://www.behance.net/gallery/234235215/AI-Finance-Assistant-Finance-App-UIUX-Design
+This folder contains a SwiftUI implementation inspired by the Behance concept:
+https://www.behance.net/gallery/244420113/Onyx-Bank-Mobile-banking-Mobile-app
 
 ## What is included
 
-- Modern dark-themed finance dashboard
-- Balance card + quick actions
-- Spending categories with progress bars
-- AI assistant chat surface
-- Analytics view with weekly bars
-- Cards/profile placeholders for tab completeness
+- Dark, high-contrast banking home screen
+- Hero balance section with translucent card carousel
+- Quick actions grid, weekly spending overview, and recent transactions
+- Custom bottom tab bar styling to match the concept direction
 
 ## Run
 
@@ -18,4 +16,4 @@ https://www.behance.net/gallery/234235215/AI-Finance-Assistant-Finance-App-UIUX-
 2. Replace generated Swift files with files from `FinanceAIClone/`.
 3. Build and run on iOS 17+ simulator.
 
-> Note: This is a design-faithful UI clone with mock data and local state.
+> Note: This is a design-focused, mock-data clone intended for visual fidelity.
