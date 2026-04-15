@@ -1,16 +1,16 @@
-# AI Finance Assistant iOS UI Clone (SwiftUI)
+# ICBC Banking App iOS UI Clone (SwiftUI)
 
-This folder contains a SwiftUI implementation inspired by the provided Behance concept:
-https://www.behance.net/gallery/234235215/AI-Finance-Assistant-Finance-App-UIUX-Design
+This folder now contains a SwiftUI implementation inspired by this Behance concept:
+https://www.behance.net/gallery/246996143/ICBC-Banking-app
 
 ## What is included
 
-- Modern dark-themed finance dashboard
-- Balance card + quick actions
-- Spending categories with progress bars
-- AI assistant chat surface
-- Analytics view with weekly bars
-- Cards/profile placeholders for tab completeness
+- Black/gray minimalist ICBC-inspired dashboard
+- Asset and balance summary cards
+- Quick services rail (transfer, payments, cards, investments)
+- Recent transaction feed with debit/credit highlights
+- Cashflow analytics tab using Swift Charts
+- Corporate card and profile screens matching the monochrome visual style
 
 ## Run
 
@@ -18,4 +18,4 @@ https://www.behance.net/gallery/234235215/AI-Finance-Assistant-Finance-App-UIUX-
 2. Replace generated Swift files with files from `FinanceAIClone/`.
 3. Build and run on iOS 17+ simulator.
 
-> Note: This is a design-faithful UI clone with mock data and local state.
+> Note: This is a design-inspired UI recreation with mock data and local state only.

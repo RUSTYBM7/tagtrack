@@ -2,100 +2,57 @@ import SwiftUI
 import Charts
 
 struct AnalyticsView: View {
-    @State private var data: [AnalyticsData] = []
-    @State private var selectedTimePeriod: TimePeriod = .week
-    @State private var isLoading: Bool = false
-
-    enum TimePeriod: String, CaseIterable {
-        case week = "Week"
-        case month = "Month"
-        case year = "Year"
-    }
+    private let weeklySeries: [DailyPoint] = [
+        .init(day: "Mon", value: 820),
+        .init(day: "Tue", value: 1260),
+        .init(day: "Wed", value: 740),
+        .init(day: "Thu", value: 1420),
+        .init(day: "Fri", value: 960),
+        .init(day: "Sat", value: 520),
+        .init(day: "Sun", value: 680)
+    ]
 
     var body: some View {
-        VStack {
-            Picker("Select Time Period", selection: $selectedTimePeriod) {
-                ForEach(TimePeriod.allCases, id: \ .self) { period in
-                    Text(period.rawValue).tag(period)
-                }
-            }.pickerStyle(SegmentedPickerStyle())
+        ScrollView(showsIndicators: false) {
+            VStack(alignment: .leading, spacing: 16) {
+                Text("Cashflow Overview")
+                    .font(.title2.bold())
+                    .foregroundStyle(.white)
 
-            if isLoading {
-                ProgressView()
-            } else {
-                // Chart for Analytics Data
-                Chart(data) { analytics in
-                    BarMark(x: .value("Date", analytics.date), y: .value("Spend", analytics.spend))
+                Chart(weeklySeries) { point in
+                    BarMark(
+                        x: .value("Day", point.day),
+                        y: .value("Amount", point.value)
+                    )
+                    .foregroundStyle(AppTheme.alert.gradient)
+                    .cornerRadius(5)
                 }
-                .frame(height: 300)
+                .frame(height: 240)
 
-                // Statistics Cards
-                HStack {
-                    StatisticsCard(title: "Total Spend", value: "\(totalSpend())")
-                    StatisticsCard(title: "Average Spend", value: "\(averageSpend())")
-                    StatisticsCard(title: "Peak Spend", value: "\(peakSpend())")
-                }
-
-                Button(action: exportData) {
-                    Text("Export Data")
-                }
+                summaryRow(title: "Outgoing", value: "5,220.80 USD")
+                summaryRow(title: "Incoming", value: "8,478.00 USD")
+                summaryRow(title: "Net", value: "+3,257.20 USD")
             }
+            .padding(20)
         }
-        .onAppear(perform: loadData)
-        .refreshable { loadData() }
+        .background(AppTheme.background)
     }
 
-    private func loadData() {
-        isLoading = true
-        // Load your data from an API or local source based on the selectedTimePeriod
-        isLoading = false
-    }
-
-    private func exportData() {
-        // Implement export logic here for CSV and JSON formats
-    }
-
-    private func totalSpend() -> Double {
-        data.reduce(0) { $0 + $1.spend }
-    }
-
-    private func averageSpend() -> Double {
-        let total = totalSpend()
-        return total / Double(data.count)
-    }
-
-    private func peakSpend() -> Double {
-        data.map { $0.spend }.max() ?? 0
-    }
-}
-
-struct StatisticsCard: View {
-    let title: String
-    let value: String
-
-    var body: some View {
-        VStack {
+    private func summaryRow(title: String, value: String) -> some View {
+        HStack {
             Text(title)
+                .foregroundStyle(.gray)
+            Spacer()
             Text(value)
-                .font(.largeTitle)
-                .foregroundColor(.blue)
+                .foregroundStyle(.white)
         }
-        .padding()
-        .background(Color.gray.opacity(0.1))
-        .cornerRadius(8)
+        .padding(14)
+        .background(Color.white.opacity(0.04), in: RoundedRectangle(cornerRadius: 12))
     }
 }
 
-struct AnalyticsData {
-    let date: Date
-    let spend: Double
-}
-
-@main
-struct YourApp: App {
-    var body: some Scene {
-        WindowGroup {
-            AnalyticsView()
-        }
-    }
+struct DailyPoint: Identifiable {
+    let id = UUID()
+    let day: String
+    let value: Double
 }
