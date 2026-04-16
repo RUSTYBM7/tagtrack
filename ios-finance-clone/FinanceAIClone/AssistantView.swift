@@ -2,61 +2,39 @@ import SwiftUI
 
 struct AssistantView: View {
     @State private var prompt = ""
+    private let messages = [
+        "Your operating account is 12% above monthly average.",
+        "Would you like me to schedule a transfer to payroll?"
+    ]
 
     var body: some View {
-        VStack(spacing: 14) {
-            HStack {
-                Text("AI Finance Assistant")
-                    .font(.title3.bold())
-                    .foregroundStyle(.white)
-                Spacer()
-            }
+        VStack(alignment: .leading, spacing: 14) {
+            Text("ICBC Assistant")
+                .font(.title3.bold())
+                .foregroundStyle(.white)
 
-            ScrollView {
-                VStack(spacing: 10) {
-                    ForEach(SampleData.messages) { message in
-                        HStack {
-                            if message.role == .assistant {
-                                messageBubble(message.text, role: .assistant)
-                                Spacer(minLength: 50)
-                            } else {
-                                Spacer(minLength: 50)
-                                messageBubble(message.text, role: .user)
-                            }
-                        }
-                    }
-                }
-            }
-
-            HStack(spacing: 8) {
-                TextField("Ask about your finances...", text: $prompt)
-                    .textFieldStyle(.plain)
+            ForEach(messages, id: \.self) { message in
+                Text(message)
                     .foregroundStyle(.white)
                     .padding(12)
-                    .background(Color.white.opacity(0.08), in: RoundedRectangle(cornerRadius: 12))
-
-                Button {
-                    prompt = ""
-                } label: {
-                    Image(systemName: "arrow.up.circle.fill")
-                        .font(.system(size: 30))
-                        .foregroundStyle(.mint)
-                }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(Color.white.opacity(0.05), in: RoundedRectangle(cornerRadius: 12))
             }
-        }
-        .padding()
-        .background(Color.black)
-    }
 
-    private func messageBubble(_ text: String, role: ChatMessage.Role) -> some View {
-        Text(text)
-            .foregroundStyle(.white)
+            HStack {
+                TextField("Ask assistant...", text: $prompt)
+                    .textFieldStyle(.plain)
+                    .foregroundStyle(.white)
+                Image(systemName: "arrow.up.circle.fill")
+                    .foregroundStyle(AppTheme.alert)
+                    .font(.title2)
+            }
             .padding(12)
-            .background(
-                role == .assistant
-                ? Color.white.opacity(0.08)
-                : Color.mint.opacity(0.25),
-                in: RoundedRectangle(cornerRadius: 12)
-            )
+            .background(Color.white.opacity(0.05), in: RoundedRectangle(cornerRadius: 12))
+
+            Spacer()
+        }
+        .padding(20)
+        .background(AppTheme.background)
     }
 }
