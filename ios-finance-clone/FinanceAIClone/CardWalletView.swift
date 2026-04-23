@@ -3,33 +3,39 @@ import SwiftUI
 struct CardWalletView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("My Cards")
+            Text("Corporate Cards")
                 .font(.title2.bold())
                 .foregroundStyle(.white)
 
             RoundedRectangle(cornerRadius: 24)
-                .fill(
-                    LinearGradient(colors: [.purple, .blue], startPoint: .topLeading, endPoint: .bottomTrailing)
-                )
-                .frame(height: 210)
+                .fill(AppTheme.card)
+                .frame(height: 220)
                 .overlay(alignment: .topLeading) {
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("VISA")
+                    VStack(alignment: .leading, spacing: 14) {
+                        Text("ICBC BUSINESS")
                             .font(.caption.bold())
-                            .foregroundStyle(.white.opacity(0.85))
+                            .foregroundStyle(.gray)
+
                         Spacer()
-                        Text("****  ****  ****  3871")
+
+                        Text("****  ****  ****  8421")
                             .font(.title3.monospaced())
                             .foregroundStyle(.white)
-                        Text("Balance: $6,820.22")
-                            .foregroundStyle(.white.opacity(0.9))
+
+                        HStack {
+                            Text("VALID 03/30")
+                            Spacer()
+                            Text("USD")
+                        }
+                        .font(.caption)
+                        .foregroundStyle(.gray)
                     }
-                    .padding(18)
+                    .padding(20)
                 }
 
             Spacer()
         }
-        .padding()
-        .background(Color.black)
+        .padding(20)
+        .background(AppTheme.background)
     }
 }

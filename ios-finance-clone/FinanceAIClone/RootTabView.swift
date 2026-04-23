@@ -5,35 +5,29 @@ struct RootTabView: View {
         TabView {
             DashboardView()
                 .tabItem {
-                    Image(systemName: "house.fill")
+                    Image(systemName: "house")
                     Text("Home")
                 }
 
             AnalyticsView()
                 .tabItem {
-                    Image(systemName: "chart.bar.fill")
-                    Text("Analytics")
-                }
-
-            AssistantView()
-                .tabItem {
-                    Image(systemName: "sparkles")
-                    Text("AI")
+                    Image(systemName: "chart.bar")
+                    Text("Insights")
                 }
 
             CardWalletView()
                 .tabItem {
-                    Image(systemName: "creditcard.fill")
+                    Image(systemName: "creditcard")
                     Text("Cards")
                 }
 
             ProfileView()
                 .tabItem {
-                    Image(systemName: "person.fill")
-                    Text("Profile")
+                    Image(systemName: "person")
+                    Text("Me")
                 }
         }
-        .tint(.mint)
-        .background(Color.black.ignoresSafeArea())
+        .tint(AppTheme.alert)
+        .background(AppTheme.background.ignoresSafeArea())
     }
 }
